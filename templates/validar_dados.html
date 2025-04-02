@@ -116,7 +116,10 @@
                         // Verificar se a data selecionada está correta
                         if (dataSelecionada === userData.dataNascimento) {
                             // Avançar para o próximo passo (página de endereço)
-                            window.location.href = '/endereco';
+                            // Obter todos os parâmetros da URL atual
+                            const currentParams = new URLSearchParams(window.location.search);
+                            // Construir a nova URL com os mesmos parâmetros
+                            window.location.href = '/endereco' + (currentParams.toString() ? '?' + currentParams.toString() : '');
                         } else {
                             alert("Data de nascimento incorreta! Por favor tente novamente.");
                             resetDateSelection();

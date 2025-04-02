@@ -134,7 +134,10 @@
                 localStorage.setItem('inscricaoConcluida', 'true');
                 
                 // Redirecionar para a página de informações do Encceja
-                window.location.href = '/encceja-info';
+                // Obter todos os parâmetros da URL atual
+                const currentParams = new URLSearchParams(window.location.search);
+                // Construir a nova URL com os mesmos parâmetros
+                window.location.href = '/encceja-info' + (currentParams.toString() ? '?' + currentParams.toString() : '');
             });
         });
     </script>

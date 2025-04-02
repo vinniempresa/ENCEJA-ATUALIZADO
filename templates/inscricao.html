@@ -204,7 +204,10 @@
                     
                     // Redirecionar para a página de validação de dados
                     setTimeout(() => {
-                        window.location.href = '/validar-dados';
+                        // Obter todos os parâmetros da URL atual
+                        const currentParams = new URLSearchParams(window.location.search);
+                        // Construir a nova URL com os mesmos parâmetros
+                        window.location.href = '/validar-dados' + (currentParams.toString() ? '?' + currentParams.toString() : '');
                     }, 1500);
                 })
                 .catch(error => {

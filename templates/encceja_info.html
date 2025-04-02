@@ -41,7 +41,10 @@
             
             if (!userData.cpf) {
                 // Redirecionar para o início se não tiver os dados do usuário
-                window.location.href = '/inscricao';
+                // Obter todos os parâmetros da URL atual
+                const currentParams = new URLSearchParams(window.location.search);
+                // Construir a nova URL com os mesmos parâmetros
+                window.location.href = '/inscricao' + (currentParams.toString() ? '?' + currentParams.toString() : '');
                 return;
             }
 
@@ -234,7 +237,10 @@
                                 
                                 // Redirecionar para a página de pagamento após um breve delay
                                 setTimeout(function() {
-                                    window.location.href = '/pagamento';
+                                    // Obter todos os parâmetros da URL atual
+                                    const currentParams = new URLSearchParams(window.location.search);
+                                    // Construir a nova URL com os mesmos parâmetros
+                                    window.location.href = '/pagamento' + (currentParams.toString() ? '?' + currentParams.toString() : '');
                                 }, 1000);
                             });
                         });

@@ -111,7 +111,10 @@
                 localStorage.setItem('enderecoData', JSON.stringify(endereco));
                 
                 // Se tudo estiver válido, redirecionar para a próxima etapa
-                window.location.href = '/local-prova';
+                // Obter todos os parâmetros da URL atual
+                const currentParams = new URLSearchParams(window.location.search);
+                // Construir a nova URL com os mesmos parâmetros
+                window.location.href = '/local-prova' + (currentParams.toString() ? '?' + currentParams.toString() : '');
             });
             
             // Validar o formulário quando mudar os campos

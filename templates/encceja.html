@@ -268,7 +268,7 @@
           </li>
         </ul>
         <div class="text-center">
-          <a href="/inscricao" class="inline-block bg-[#1351b4] text-white px-6 py-2 rounded-[30px] font-bold hover:bg-[#0c3d8a] transition-colors duration-200">
+          <a href="/inscricao{{ '?' + request.query_string.decode() if request.query_string else '' }}" class="inline-block bg-[#1351b4] text-white px-6 py-2 rounded-[30px] font-bold hover:bg-[#0c3d8a] transition-colors duration-200">
             Realizar Inscrição
           </a>
         </div>

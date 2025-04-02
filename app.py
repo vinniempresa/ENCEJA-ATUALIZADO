@@ -1470,21 +1470,25 @@ def validar_dados():
     return render_template('validar_dados.html')
 
 @app.route('/endereco')
+@check_esta_aprovando
 def endereco():
     """Página de cadastro de endereço"""
     return render_template('endereco.html')
 
 @app.route('/local-prova')
+@check_esta_aprovando
 def local_prova():
     """Página de seleção do local de prova"""
     return render_template('local_prova.html')
 
 @app.route('/inscricao-sucesso')
+@check_esta_aprovando
 def inscricao_sucesso():
     """Página de sucesso da inscrição"""
     return render_template('inscricao_sucesso.html')
 
 @app.route('/encceja-info')
+@check_esta_aprovando
 def encceja_info():
     """Página com informações detalhadas sobre o Encceja"""
     return render_template('encceja_info.html')

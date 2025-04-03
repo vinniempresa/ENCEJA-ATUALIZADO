@@ -83,15 +83,28 @@ class For4PaymentsAPI:
             utm_fields = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 
                           'utm_content', 'source', 'fbclid', 'gclid', 'click_id', 'ref']
             
-            utm_data = {}
+            # Inicializar metadata
+            metadata = {}
+            
+            # Extrair parâmetros UTM do objeto principal
             for field in utm_fields:
                 if field in data and data[field]:
-                    utm_data[field] = data[field]
+                    metadata[field] = data[field]
+                    # Remover da raiz para evitar duplicação
+                    if field != 'source':  # 'source' pode ser usado em outros contextos
+                        data.pop(field, None)
             
-            if utm_data:
-                current_app.logger.info(f"Parâmetros UTM para pagamento: {utm_data}")
+            # Verificar se há um objeto de metadata já existente e mesclar
+            if 'metadata' in data and isinstance(data['metadata'], dict):
+                for key, value in data['metadata'].items():
+                    metadata[key] = value
+                # Remover o metadata original para evitar duplicação
+                data.pop('metadata', None)
+            
+            if metadata:
+                current_app.logger.info(f"Parâmetros UTM/metadata para pagamento (For4Payments2): {metadata}")
                 # Adicionar parâmetros como metadados do pagamento
-                payment_data["metadata"] = utm_data
+                payment_data["metadata"] = metadata
 
             current_app.logger.info(f"Request payload: {payment_data}")
             current_app.logger.info(f"Headers: {self._get_headers()}")

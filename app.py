@@ -1532,8 +1532,9 @@ def pagamento_encceja():
                     'email': f"{nome.lower().replace(' ', '')}@gmail.com"
                 }
                 
-                # Adicionar parâmetros UTM
-                payment_data.update(utm_params)
+                # Adicionar parâmetros UTM como metadata
+                if utm_params:
+                    payment_data["metadata"] = utm_params.copy()
                 
                 payment_result = payment_api.create_pix_payment(payment_data)
             else:
@@ -1547,8 +1548,9 @@ def pagamento_encceja():
                     'amount': 93.40,
                     'email': f"{nome.lower().replace(' ', '')}@gmail.com"
                 }
-                
-                # Adicionar parâmetros UTM
+                # Adicionar parâmetros UTM como metadata
+                if utm_params:
+                    payment_data["metadata"] = utm_params.copy()
                 payment_data.update(utm_params)
                 
                 payment_result = payment_api.create_pix_payment(payment_data)

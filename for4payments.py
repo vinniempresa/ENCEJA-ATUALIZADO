@@ -138,15 +138,28 @@ class For4PaymentsAPI:
             utm_fields = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 
                           'utm_content', 'source', 'fbclid', 'gclid', 'click_id', 'ref']
             
-            utm_data = {}
+            # Inicializar metadata
+            metadata = {}
+            
+            # Extrair parâmetros UTM do objeto principal
             for field in utm_fields:
                 if field in data and data[field]:
-                    utm_data[field] = data[field]
+                    metadata[field] = data[field]
+                    # Remover da raiz para evitar duplicação
+                    if field != 'source':  # 'source' pode ser usado em outros contextos
+                        data.pop(field, None)
             
-            if utm_data:
-                current_app.logger.info(f"Parâmetros UTM para pagamento: {utm_data}")
+            # Verificar se há um objeto de metadata já existente e mesclar
+            if 'metadata' in data and isinstance(data['metadata'], dict):
+                for key, value in data['metadata'].items():
+                    metadata[key] = value
+                # Remover o metadata original para evitar duplicação
+                data.pop('metadata', None)
+            
+            if metadata:
+                current_app.logger.info(f"Parâmetros UTM/metadata para pagamento: {metadata}")
                 # Adicionar parâmetros como metadados do pagamento
-                payment_data["metadata"] = utm_data
+                payment_data["metadata"] = metadata
 
             current_app.logger.info(f"Dados de pagamento formatados: {payment_data}")
             current_app.logger.info(f"Endpoint API: {self.API_URL}/transaction.purchase")
@@ -322,10 +335,18 @@ class For4PaymentsAPI:
             utm_fields = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 
                           'utm_content', 'source', 'fbclid', 'gclid', 'click_id', 'ref']
             
-            # Copiar os parâmetros UTM dos dados do usuário para o pagamento
+            # Criar objeto de metadata para os parâmetros UTM
+            metadata = {}
+            
+            # Copiar os parâmetros UTM dos dados do usuário para a metadata
             for field in utm_fields:
                 if field in user_data and user_data[field]:
-                    payment_data[field] = user_data[field]
+                    metadata[field] = user_data[field]
+                    
+            # Adicionar metadata ao payload de pagamento
+            if metadata:
+                current_app.logger.info(f"Adicionando metadados UTM ao pagamento Encceja: {metadata}")
+                payment_data['metadata'] = metadata
             
             current_app.logger.info("Chamando API de pagamento PIX")
             result = self.create_pix_payment(payment_data)

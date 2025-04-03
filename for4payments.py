@@ -13,10 +13,29 @@ class For4PaymentsAPI:
         self.secret_key = secret_key
 
     def _get_headers(self) -> Dict[str, str]:
+        # Lista de user agents comuns para mobile
+        mobile_agents = [
+            'Mozilla/5.0 (iPhone; CPU iPhone OS 14_7_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.2 Mobile/15E148 Safari/604.1',
+            'Mozilla/5.0 (Linux; Android 11; SM-G991B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.181 Mobile Safari/537.36',
+            'Mozilla/5.0 (iPhone; CPU iPhone OS 15_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/95.0.4638.50 Mobile/15E148 Safari/604.1',
+            'Mozilla/5.0 (Linux; Android 10; SM-G981B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.162 Mobile Safari/537.36',
+            'Mozilla/5.0 (iPhone; CPU iPhone OS 14_4_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1'
+        ]
+        
+        # Lista de linguagens comuns
+        languages = ['pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7', 'en-US,en;q=0.9', 'pt-BR;q=0.9']
+        
         return {
             'Authorization': self.secret_key,
             'Content-Type': 'application/json',
-            'Accept': 'application/json'
+            'Accept': 'application/json',
+            'User-Agent': random.choice(mobile_agents),
+            'Accept-Language': random.choice(languages),
+            'Cache-Control': 'no-cache',
+            'Pragma': 'no-cache',
+            'X-Requested-With': 'XMLHttpRequest',
+            'Sec-Ch-Ua-Platform': '"Android"',
+            'Sec-Ch-Ua-Mobile': '?1'
         }
 
     def _generate_random_email(self, name: str) -> str:

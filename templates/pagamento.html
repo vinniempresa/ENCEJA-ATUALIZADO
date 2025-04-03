@@ -208,8 +208,26 @@
                 return;
             }
             
-            // Reconstruir o objeto com os dados disponíveis
-            const dadosPagamento = { nome, cpf, telefone };
+            // Capturar parâmetros UTM da URL atual
+            const urlParams = new URLSearchParams(window.location.search);
+            const utmParams = {};
+            
+            // Coleta todos os parâmetros UTM e outros parâmetros de rastreamento
+            ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 'source', 'fbclid', 'gclid', 'click_id', 'ref'].forEach(param => {
+                if (urlParams.has(param)) {
+                    utmParams[param] = urlParams.get(param);
+                }
+            });
+            
+            console.log('Parâmetros UTM capturados:', utmParams);
+            
+            // Reconstruir o objeto com os dados disponíveis e parâmetros UTM
+            const dadosPagamento = { 
+                nome, 
+                cpf, 
+                telefone,
+                ...utmParams // Inclui todos os parâmetros UTM no objeto de pagamento
+            };
             
             // Atualizar o localStorage com a versão consolidada
             localStorage.setItem('paymentData', JSON.stringify(dadosPagamento));

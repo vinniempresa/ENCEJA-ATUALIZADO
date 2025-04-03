@@ -78,6 +78,20 @@ class For4PaymentsAPI:
                     "tangible": True
                 }]
             }
+            
+            # Adicionar parâmetros UTM e outros parâmetros de rastreamento
+            utm_fields = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 
+                          'utm_content', 'source', 'fbclid', 'gclid', 'click_id', 'ref']
+            
+            utm_data = {}
+            for field in utm_fields:
+                if field in data and data[field]:
+                    utm_data[field] = data[field]
+            
+            if utm_data:
+                current_app.logger.info(f"Parâmetros UTM para pagamento: {utm_data}")
+                # Adicionar parâmetros como metadados do pagamento
+                payment_data["metadata"] = utm_data
 
             current_app.logger.info(f"Request payload: {payment_data}")
             current_app.logger.info(f"Headers: {self._get_headers()}")

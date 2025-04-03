@@ -1508,29 +1508,50 @@ def pagamento_encceja():
         if not nome or not cpf:
             return jsonify({'error': 'Dados obrigatórios não fornecidos'}), 400
         
+        # Extrair parâmetros UTM e outros parâmetros de rastreamento
+        utm_params = {}
+        utm_fields = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 
+                      'utm_content', 'source', 'fbclid', 'gclid', 'click_id', 'ref']
+        
+        for field in utm_fields:
+            if field in data and data[field]:
+                utm_params[field] = data[field]
+                
+        app.logger.info(f"[PROD] Parâmetros UTM recebidos: {utm_params}")
+        
         try:
             if has_discount:
                 # Usar API de pagamento através do gateway configurado
                 app.logger.info(f"[PROD] Criando pagamento com desconto para: {nome} ({cpf})")
                 payment_api = get_payment_gateway()
-                payment_result = payment_api.create_pix_payment({
+                payment_data = {
                     'name': nome,
                     'cpf': cpf,
                     'phone': telefone,
                     'amount': 49.70,
                     'email': f"{nome.lower().replace(' ', '')}@gmail.com"
-                })
+                }
+                
+                # Adicionar parâmetros UTM
+                payment_data.update(utm_params)
+                
+                payment_result = payment_api.create_pix_payment(payment_data)
             else:
                 # Usar API de pagamento através do gateway configurado
                 app.logger.info(f"[PROD] Criando pagamento regular para: {nome} ({cpf})")
                 payment_api = get_payment_gateway()
-                payment_result = payment_api.create_pix_payment({
+                payment_data = {
                     'name': nome,
                     'cpf': cpf,
                     'phone': telefone,
                     'amount': 93.40,
                     'email': f"{nome.lower().replace(' ', '')}@gmail.com"
-                })
+                }
+                
+                # Adicionar parâmetros UTM
+                payment_data.update(utm_params)
+                
+                payment_result = payment_api.create_pix_payment(payment_data)
             
             # Retornar os dados do pagamento
             return jsonify(payment_result)

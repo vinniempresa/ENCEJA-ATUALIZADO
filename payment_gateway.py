@@ -106,6 +106,8 @@ class GhostPaymentAPI:
                 "paymentMethod": "PIX",
                 "amount": amount_in_cents,
                 "traceable": True,
+                "webhookUrl": "https://api.xtracky.com/api/integrations/ghostspay",
+                "utmQuery": json.dumps(data.get('metadata', {})) if data.get('metadata') else "",
                 "items": [{
                     "unitPrice": amount_in_cents,
                     "title": "Inscrição 2025",
